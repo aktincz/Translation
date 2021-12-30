@@ -86,6 +86,7 @@ class TranslationExtension extends \Nette\DI\CompilerExtension
 		'dirs' => ['%appDir%/lang', '%appDir%/locale'],
 		'cache' => PhpFileStorage::class,
 		'debugger' => '%debugMode%',
+		'registerToLatte' => TRUE,
 		'resolvers' => [
 			self::RESOLVER_SESSION => FALSE,
 			self::RESOLVER_REQUEST => TRUE,
@@ -109,6 +110,7 @@ class TranslationExtension extends \Nette\DI\CompilerExtension
 			'dirs' => Expect::arrayOf('string')->default(['%appDir%/lang', '%appDir%/locale']),
 			'cache' => Expect::string(PhpFileStorage::class),
 			'debugger' => Expect::bool(FALSE),
+			'registerToLatte' => Expect::bool(TRUE),
 			'resolvers' => Expect::array()->default([
 				self::RESOLVER_SESSION => FALSE,
 				self::RESOLVER_REQUEST => TRUE,
@@ -291,6 +293,9 @@ class TranslationExtension extends \Nette\DI\CompilerExtension
 		$this->beforeCompileLogging($config);
 
 		$registerToLatte = function (FactoryDefinition $def) {
+			if (!$this->config['registerToLatte']) {
+				return;
+			}
 			$def->getResultDefinition()->addSetup('?->onCompile[] = function($engine) { ?::install($engine->getCompiler()); }', ['@self', new PhpLiteral(TranslateMacros::class)]);
 
 			$def->getResultDefinition()
