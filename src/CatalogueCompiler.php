@@ -12,7 +12,7 @@ namespace Kdyby\Translation;
 
 use Kdyby\Translation\Caching\PhpFileStorage;
 use Nette\Caching\Cache;
-use Nette\Caching\IStorage;
+use Nette\Caching\Storage;
 use Nette\Caching\Storages\MemoryStorage;
 use Nette\PhpGenerator\Helpers as GeneratorHelpers;
 use Nette\PhpGenerator\PhpLiteral;
@@ -38,7 +38,7 @@ class CatalogueCompiler
 	private $catalogueFactory;
 
 	public function __construct(
-		IStorage $cacheStorage,
+		Storage $cacheStorage,
 		FallbackResolver $fallbackResolver,
 		CatalogueFactory $catalogueFactory
 	)
